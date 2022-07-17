@@ -69,23 +69,22 @@ methods: {
     <div class="auto-cols-auto m-0">
          <div class="flex justify-start rounded-md border-black m-0">
             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg ma-1 focus:outline-none block w-1/4 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="Array">Array</option>
-              <option value="Queue">Queue</option>
-              <option value="Priority Queue">Priority Queue</option>
-              <option value="Linked List">Linked List</option>
+              <template v-for="option in langs" :key="option.name">
+										<option class="text-black" :value="option.code">{{ option.name }}</option>
+									</template>
             </select>
          </div>
          <div class="border-gray mt-2">
-           <textarea v-model="textToTranslate" rows="8" class="rounded-lg shadow-md block p-2 focus:outline-none w-full text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Enter text..." required></textarea>
-          </div>
+           <textarea id="textToTranslate" v-model="textToTranslate" rows="8" class="rounded-lg shadow-md block p-2 focus:outline-none w-full text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Enter text..." required></textarea>
+         
+         </div>
       </div>
     <div class="auto-cols-auto m-0">
          <div class="flex justify-start rounded-md border-black m-0">
             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg ma-1 focus:outline-none block w-1/4 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="Array">Array</option>
-              <option value="Queue">Queue</option>
-              <option value="Priority Queue">Priority Queue</option>
-              <option value="Linked List">Linked List</option>
+            <template v-for="option in langs" :key="option.name">
+										<option class="text-black" :value="option.code">{{ option.name }}</option>
+									</template>
             </select>
          </div>
          <div class="border-gray mt-2">
@@ -99,19 +98,27 @@ methods: {
 </template>
 
 <script lang="ts">
+import axios from 'axios'
 export default {
+
   data() {
-    
-    return {
-      postData: {
-        q: "",
-		source: "en",
-		target: "fa",
-		format: "text",
-		api_key: ""
-      }
+   return {
+        langs:[],
+        // postData: {
+        //     q: "",
+        //     source: "en",
+        //     target: "fa",
+        //     format: "text",
+        //     api_key: ""
+        // },
     }
   },
+ async mounted() {
+    let result = await axios.get('https://lt.vern.cc/languages')
+    console.log("result")
+    console.log(result)
+    this.langs = result.data
+},
   methods: {
     setPost() {
       fetch('https://lt.vern.cc/translate',{
@@ -127,11 +134,12 @@ export default {
             api_key: ""
         })
       })
-        .then(response => console.log(response.json()))
+        .then(response => response.json())
         .then(data => console.log(data))
-
+      
     }
   }
+  
 }
 </script>
 
