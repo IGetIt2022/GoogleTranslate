@@ -47,8 +47,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   data() {
     return {
-      langs: [],
-      confidence: null,
+      langs: [{"code": ""}, {"name":""}],
       settings: {},
       translatedText: "",
       postData: {
@@ -89,11 +88,7 @@ export default defineComponent({
     this.langs = result.data
     let settings = await axios.get('https://lt.vern.cc/frontend/settings')
     this.settings = settings.data
-    let detect = await axios.post('https://lt.vern.cc/detect', {
-      confidence: this.confidence,
-      language: this.postData.q
-    })
-    console.log(detect)
+    
   },
 })
 </script>
